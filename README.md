@@ -42,3 +42,14 @@ source .venv/bin/activate      # Windows: .venv\\Scripts\\activate
 pip install fastapi uvicorn
 
 uvicorn api_gateway.main:app --reload --port 8001
+
+## Step 2
+1. stream还没配置--站位了
+2./chat 接口测试 -ok
+3. 交互文档 swagger ui -- /docs[fastapi 自动配的]
+- 新增：
+  - `POST /chat`（最小回显版，OpenAI 风格响应；为后续接 vLLM 做好响应契约）
+
+
+
+
