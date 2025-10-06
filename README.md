@@ -27,8 +27,15 @@ it is distributed service system, it was seperated into different responsibiliti
 - 已实现接口：
   - `GET /healthz` → `{"ok": true}`（用于本地冒烟、LB/K8s 探活、部署验收）
 
----
 
+## Step 2
+1. stream还没配置--站位了
+2./chat 接口测试 -ok
+3. 交互文档 swagger ui -- /docs[fastapi 自动配的]
+- 新增：
+  - `POST /chat`（最小回显版，OpenAI 风格响应；为后续接 vLLM 做好响应契约）
+  
+---
 ## 本地运行
 
 > 需要 Python 3.10+
@@ -43,12 +50,7 @@ pip install fastapi uvicorn
 
 uvicorn api_gateway.main:app --reload --port 8001
 
-## Step 2
-1. stream还没配置--站位了
-2./chat 接口测试 -ok
-3. 交互文档 swagger ui -- /docs[fastapi 自动配的]
-- 新增：
-  - `POST /chat`（最小回显版，OpenAI 风格响应；为后续接 vLLM 做好响应契约）
+
 
 
 
