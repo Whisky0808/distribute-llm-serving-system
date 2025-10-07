@@ -21,7 +21,7 @@ it is distributed service system, it was seperated into different responsibiliti
 
 ---
 
-## 当前状态（Step 1）
+## Step 1
 
 - 技术栈：FastAPI + Uvicorn
 - 已实现接口：
@@ -34,7 +34,24 @@ it is distributed service system, it was seperated into different responsibiliti
 3. 交互文档 swagger ui -- /docs[fastapi 自动配的]
 - 新增：
   - `POST /chat`（最小回显版，OpenAI 风格响应；为后续接 vLLM 做好响应契约）
-  
+
+## Step 3：接入 vLLM（Colab 上跑模型，本地 `/chat` 调用）
+
+本步骤目标：  
+让本地 FastAPI 的 `POST /chat` 不再回显，而是**通过 HTTP 调用 Colab 上的 vLLM 模型**，并把模型生成结果返回。  
+接口形态与 **OpenAI 兼容**（路径与 JSON 结构尽量一致），便于后续复用任意 OpenAI 客户端/SDK。
+
+---
+
+### 3.1 在 Colab 启动 vLLM 并暴露端口
+
+在 Colab Notebook 依次运行以下单元：
+
+**(1) 安装依赖**
+```python
+!pip install vllm openai pyngrok
+
+
 ---
 ## 本地运行
 
