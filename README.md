@@ -119,3 +119,20 @@ Grafana: http://localhost:3000
 
 ---
 
+
+
+##Step 5
+— Load Testing (Locust / k6): Record RPS / P95 / tokens per second
+
+At this stage, use k6 or Locust to perform load testing on your core APIs to measure system performance under different levels of concurrency.
+
+Key metrics to record:
+
+RPS (Requests Per Second) — the number of successful requests processed per second, indicating system throughput.
+
+P95 (95th Percentile Latency) — the response time below which 95 percent of requests complete, showing tail latency and user experience stability.
+
+tokens/sec — for LLM or AI inference APIs, represents how many tokens are generated per second (model throughput).
+
+These metrics provide a quantitative baseline for later optimization and capacity planning.
+
