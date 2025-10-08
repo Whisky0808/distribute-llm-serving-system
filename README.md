@@ -114,7 +114,7 @@ Prometheus: http://localhost:9090
 
 Grafana: http://localhost:3000
  （用户名 admin，密码 admin）
-<img width="1693" height="853" alt="image" src="https://github.com/user-attachments/assets/1eda07b3-4887-4c74-8efa-be3c3e26ac0b" />
+<img width="1530" height="805" alt="image" src="https://github.com/user-attachments/assets/8724eeaf-fb34-493d-8b31-dbc64d28c591" />
 
 
 ---
