@@ -40,6 +40,32 @@ it is distributed service system, it was seperated into different responsibiliti
 本步骤目标：  
 让本地 FastAPI 的 `POST /chat` 不再回显，而是**通过 HTTP 调用 Colab 上的 vLLM 模型**，并把模型生成结果返回。  
 接口形态与 **OpenAI 兼容**（路径与 JSON 结构尽量一致），便于后续复用任意 OpenAI 客户端/SDK。
+### 3.1 在 Colab 启动 vLLM 并暴露端口
+
+在 Colab Notebook 依次运行以下单元：
+
+**(1) 安装依赖**
+```python
+!pip install vllm openai pyngrok
+
+
+---
+## 本地运行
+
+> 需要 Python 3.10+
+
+```bash
+git clone <your-repo-url>
+cd <repo-dir>
+
+python3 -m venv .venv
+source .venv/bin/activate      # Windows: .venv\\Scripts\\activate
+pip install fastapi uvicorn
+
+uvicorn api_gateway.main:app --reload --port 8001
+
+
+
 
 
 ## Step 4: add basic observability (Prometheus metrics) to the API.
@@ -96,33 +122,4 @@ Grafana: http://localhost:3000
 
 
 ---
-
-### 3.1 在 Colab 启动 vLLM 并暴露端口
-
-在 Colab Notebook 依次运行以下单元：
-
-**(1) 安装依赖**
-```python
-!pip install vllm openai pyngrok
-
-
----
-## 本地运行
-
-> 需要 Python 3.10+
-
-```bash
-git clone <your-repo-url>
-cd <repo-dir>
-
-python3 -m venv .venv
-source .venv/bin/activate      # Windows: .venv\\Scripts\\activate
-pip install fastapi uvicorn
-
-uvicorn api_gateway.main:app --reload --port 8001
-
-
-
-
-
 
