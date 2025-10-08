@@ -136,3 +136,14 @@ tokens/sec — for LLM or AI inference APIs, represents how many tokens are gene
 
 These metrics provide a quantitative baseline for later optimization and capacity planning.
 
+## step6 & 7
+When load testing reveals performance bottlenecks, introduce resilience mechanisms to protect the system from overload:
+
+Rate Limiting – controls how many requests are allowed per unit time (e.g., token bucket or sliding window algorithms) to prevent downstream collapse.
+
+Admission Control (Queueing) – places excess requests in a temporary queue when concurrency exceeds the threshold.
+
+Timeouts – define maximum wait times for outbound calls to avoid blocking threads indefinitely.
+
+Retries with Exponential Backoff – automatically retry failed requests a limited number of times with increasing delay, ensuring idempotency.
+
