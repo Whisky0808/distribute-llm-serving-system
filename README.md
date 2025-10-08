@@ -23,30 +23,6 @@ it is distributed service system, it was seperated into different responsibiliti
 
 ## Step 1
 
-- 技术栈：FastAPI + Uvicorn
-- 已实现接口：
-  - `GET /healthz` → `{"ok": true}`（用于本地冒烟、LB/K8s 探活、部署验收）
-
-
-## Step 2
-1. stream还没配置--站位了
-2./chat 接口测试 -ok
-3. 交互文档 swagger ui -- /docs[fastapi 自动配的]
-- 新增：
-  - `POST /chat`（最小回显版，OpenAI 风格响应；为后续接 vLLM 做好响应契约）
-
-## Step 3：接入 vLLM（Colab 上跑模型，本地 `/chat` 调用）
-
-本步骤目标：  
-让本地 FastAPI 的 `POST /chat` 不再回显，而是**通过 HTTP 调用 Colab 上的 vLLM 模型**，并把模型生成结果返回。  
-接口形态与 **OpenAI 兼容**（路径与 JSON 结构尽量一致），便于后续复用任意 OpenAI 客户端/SDK。
-### 3.1 在 Colab 启动 vLLM 并暴露端口
-
-在 Colab Notebook 依次运行以下单元：
-
-**(1) 安装依赖**
-```python
-!pip install vllm openai pyngrok
 
 
 ---
@@ -64,6 +40,26 @@ pip install fastapi uvicorn
 
 uvicorn api_gateway.main:app --reload --port 8001
 ```
+
+
+- 技术栈：FastAPI + Uvicorn
+- 已实现接口：
+  - `GET /healthz` → `{"ok": true}`（用于本地冒烟、LB/K8s 探活、部署验收）
+
+
+## Step 2
+1. stream还没配置--站位了
+2./chat 接口测试 -ok
+3. 交互文档 swagger ui -- /docs[fastapi 自动配的]
+- 新增：
+  - `POST /chat`（最小回显版，OpenAI 风格响应；为后续接 vLLM 做好响应契约）
+
+## Step 3：接入 vLLM（Colab 上跑模型，本地 `/chat` 调用）
+
+本步骤目标：  
+让本地 FastAPI 的 `POST /chat` 不再回显，而是**通过 HTTP 调用 Colab 上的 vLLM 模型**，并把模型生成结果返回。  
+接口形态与 **OpenAI 兼容**（路径与 JSON 结构尽量一致），便于后续复用任意 OpenAI 客户端/SDK。
+
 
 
 ## Step 4: add basic observability (Prometheus metrics) to the API.
@@ -114,9 +110,11 @@ docker run --name grafana \
 
 Prometheus: http://localhost:9090
  （Status → Targets 看到 UP 就成功）
+ 
 
 Grafana: http://localhost:3000
  （用户名 admin，密码 admin）
+<img width="1693" height="853" alt="image" src="https://github.com/user-attachments/assets/1eda07b3-4887-4c74-8efa-be3c3e26ac0b" />
 
 
 ---
