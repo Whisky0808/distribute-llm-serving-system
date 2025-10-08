@@ -70,6 +70,31 @@ Prometheus 指标就是你的程序对外暴露的“健康体检表”。
 
 - 模型推理吞吐量
 
+```bash
+在项目根目录执行：
+
+# Prometheus
+docker run --name prometheus \
+  -p 9090:9090 \
+  -v "$PWD/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro" \
+  prom/prometheus:latest
+
+# 另开一个终端起 Grafana
+docker run --name grafana \
+  -p 3000:3000 \
+  -e GF_SECURITY_ADMIN_PASSWORD=admin \
+  grafana/grafana:latest
+
+
+打开：
+
+Prometheus: http://localhost:9090
+ （Status → Targets 看到 UP 就成功）
+
+Grafana: http://localhost:3000
+ （用户名 admin，密码 admin）
+
+
 ---
 
 ### 3.1 在 Colab 启动 vLLM 并暴露端口

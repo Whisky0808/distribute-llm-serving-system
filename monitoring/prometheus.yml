@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: "api"
+    static_configs:
+      - targets: ["host.docker.internal:8001"]  # 如果 Prometheus 也在 Docker 里跑
+# 若 Prometheus 不用 Docker，且你直接本机跑它，把上行改成: ["localhost:8001"]
+
+
+

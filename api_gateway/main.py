@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from datetime import datetime
 import uuid
-from fastapi.responses import RedirectResponse
+from fastapi.responses import PlainTextResponse, RedirectResponse
 import httpx
 import uuid
 from prometheus_client import Counter, Histogram,generate_latest,CONTENT_TYPE_LATEST
@@ -18,9 +18,9 @@ class ChatRequest(BaseModel):
     prompt: str = Field(..., min_length=1, description="User prompt")
     stream: bool = False  # 先占位，暂不实现流式
 
-# the vllm is listening to the 8000 port
-VLLM_BASE = "https://transgressively-wantless-lakiesha.ngrok-free.dev"
-MODEL = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+# the ollama-phi3 is listening to the 11434 port
+OLLAMA_URL = "http://localhost:11434/api/generate"
+MODEL = "phi3"
 
 @app.post("/chat", tags=["Chat"])
 async def chat(request: ChatRequest):
@@ -36,22 +36,21 @@ async def chat(request: ChatRequest):
             ],
             "stream": False,
         }
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=300) as client:
             # 本来是服务端暴露接口，但是同时也是客户端，去请求vllm服务
-            response = await client.post(f"{VLLM_BASE}/v1/chat/completions", json=payload)
+            response = await client.post(f"{OLLAMA_URL}/v1/chat/completions", json=payload)
             response.raise_for_status()
             data = response.json()
-        REQS.labels( endpoint="/chat").inc()
-        return data
+        reply_text = data.get("response", "")
+        return {"model": MODEL, "reply": reply_text}
+    
     except Exception as e:
         ERRS.labels("/chat", type(e).__name__).inc()
         REQS.labels("/chat","500").inc()
         return {"error": str(e)}
     finally:
+        # 这是给endpoint打点，记录延迟，只要你配置了endpoint标签，就会有对应的延迟数据
         LAT.labels( endpoint="/chat").observe(time.time() - start)
-
-
-
 
 
 
