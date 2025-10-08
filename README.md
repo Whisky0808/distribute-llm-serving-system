@@ -63,9 +63,7 @@ source .venv/bin/activate      # Windows: .venv\\Scripts\\activate
 pip install fastapi uvicorn
 
 uvicorn api_gateway.main:app --reload --port 8001
-
-
-
+```
 
 
 ## Step 4: add basic observability (Prometheus metrics) to the API.
