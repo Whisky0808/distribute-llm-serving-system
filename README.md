@@ -23,30 +23,6 @@ it is distributed service system, it was seperated into different responsibiliti
 
 ## Step 1
 
-- 技术栈：FastAPI + Uvicorn
-- 已实现接口：
-  - `GET /healthz` → `{"ok": true}`（用于本地冒烟、LB/K8s 探活、部署验收）
-
-
-## Step 2
-1. stream还没配置--站位了
-2./chat 接口测试 -ok
-3. 交互文档 swagger ui -- /docs[fastapi 自动配的]
-- 新增：
-  - `POST /chat`（最小回显版，OpenAI 风格响应；为后续接 vLLM 做好响应契约）
-
-## Step 3：接入 vLLM（Colab 上跑模型，本地 `/chat` 调用）
-
-本步骤目标：  
-让本地 FastAPI 的 `POST /chat` 不再回显，而是**通过 HTTP 调用 Colab 上的 vLLM 模型**，并把模型生成结果返回。  
-接口形态与 **OpenAI 兼容**（路径与 JSON 结构尽量一致），便于后续复用任意 OpenAI 客户端/SDK。
-### 3.1 在 Colab 启动 vLLM 并暴露端口
-
-在 Colab Notebook 依次运行以下单元：
-
-**(1) 安装依赖**
-```python
-!pip install vllm openai pyngrok
 
 
 ---
@@ -64,6 +40,26 @@ pip install fastapi uvicorn
 
 uvicorn api_gateway.main:app --reload --port 8001
 ```
+
+
+- 技术栈：FastAPI + Uvicorn
+- 已实现接口：
+  - `GET /healthz` → `{"ok": true}`（用于本地冒烟、LB/K8s 探活、部署验收）
+
+
+## Step 2
+1. stream还没配置--站位了
+2./chat 接口测试 -ok
+3. 交互文档 swagger ui -- /docs[fastapi 自动配的]
+- 新增：
+  - `POST /chat`（最小回显版，OpenAI 风格响应；为后续接 vLLM 做好响应契约）
+
+## Step 3：接入 vLLM（Colab 上跑模型，本地 `/chat` 调用）
+
+本步骤目标：  
+让本地 FastAPI 的 `POST /chat` 不再回显，而是**通过 HTTP 调用 Colab 上的 vLLM 模型**，并把模型生成结果返回。  
+接口形态与 **OpenAI 兼容**（路径与 JSON 结构尽量一致），便于后续复用任意 OpenAI 客户端/SDK。
+
 
 
 ## Step 4: add basic observability (Prometheus metrics) to the API.
@@ -114,10 +110,29 @@ docker run --name grafana \
 
 Prometheus: http://localhost:9090
  （Status → Targets 看到 UP 就成功）
+ 
 
 Grafana: http://localhost:3000
  （用户名 admin，密码 admin）
+<img width="1530" height="805" alt="image" src="https://github.com/user-attachments/assets/8724eeaf-fb34-493d-8b31-dbc64d28c591" />
 
 
 ---
+
+
+
+## Step 5
+— Load Testing (Locust / k6): Record RPS / P95 / tokens per second
+
+At this stage, use k6 or Locust to perform load testing on your core APIs to measure system performance under different levels of concurrency.
+
+Key metrics to record:
+
+RPS (Requests Per Second) — the number of successful requests processed per second, indicating system throughput.
+
+P95 (95th Percentile Latency) — the response time below which 95 percent of requests complete, showing tail latency and user experience stability.
+
+tokens/sec — for LLM or AI inference APIs, represents how many tokens are generated per second (model throughput).
+
+These metrics provide a quantitative baseline for later optimization and capacity planning.
 
