@@ -41,6 +41,35 @@ it is distributed service system, it was seperated into different responsibiliti
 让本地 FastAPI 的 `POST /chat` 不再回显，而是**通过 HTTP 调用 Colab 上的 vLLM 模型**，并把模型生成结果返回。  
 接口形态与 **OpenAI 兼容**（路径与 JSON 结构尽量一致），便于后续复用任意 OpenAI 客户端/SDK。
 
+
+## Step 4: add basic observability (Prometheus metrics) to the API.
+### Prometheus：
+1. 为什么这很重要（特别是做分布式/LLM服务）
+
+你可以 量化性能瓶颈：模型推理慢在哪、响应时间分布如何；
+
+你能 自动报警：比如错误率 >5% 时触发告警；
+
+你能 做容量规划：观察 QPS 与延迟变化关系，决定是否扩容 GPU 节点；
+
+是所有 SRE（可观测性 / Observability）体系的基础层。
+
+2. 一句话总结
+
+Prometheus 指标就是你的程序对外暴露的“健康体检表”。
+它告诉监控系统：我现在处理了多少请求、延迟多大、有没有报错。
+后面接上 Prometheus + Grafana，你就能画出漂亮的监控图，看到 LLM 服务运行的真实状况。
+
+- QPS（每秒请求数）
+
+- 错误率
+
+- 延迟（p50 / p95 / p99）
+
+- CPU / 内存使用率
+
+- 模型推理吞吐量
+
 ---
 
 ### 3.1 在 Colab 启动 vLLM 并暴露端口
