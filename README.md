@@ -121,7 +121,7 @@ Grafana: http://localhost:3000
 
 
 
-##Step 5
+## Step 5
 — Load Testing (Locust / k6): Record RPS / P95 / tokens per second
 
 At this stage, use k6 or Locust to perform load testing on your core APIs to measure system performance under different levels of concurrency.
